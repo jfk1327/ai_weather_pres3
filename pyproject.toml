@@ -1,0 +1,39 @@
+[project]
+name = "aiweather"
+version = "0.1.0"
+description = "AI for Weather group project: transformer / VAE for a weather or climate task"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "torch>=2.7",
+    "numpy",
+    "xarray",
+    "netcdf4",
+    "pandas",
+    "matplotlib",
+    "pyyaml",
+    "wandb",
+    "tqdm",
+]
+
+[dependency-groups]
+dev = ["ruff", "pytest", "jupyterlab", "ipykernel", "nbstripout"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/aiweather"]
+
+# CUDA 12.8 wheels on Linux/Windows (needed for RTX 50-series); macOS uses PyPI.
+[tool.uv.sources]
+torch = [{ index = "pytorch-cu128", marker = "sys_platform == 'linux' or sys_platform == 'win32'" }]
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.ruff]
+line-length = 100

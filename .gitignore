@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Data & outputs (never commit)
+data/*
+!data/.gitkeep
+outputs/*
+!outputs/.gitkeep
+wandb/
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+*.nc
+*.grib
+*.zarr/
+
+# Env / secrets
+.env
+.netrc
+.cdsapirc
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
