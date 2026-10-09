@@ -1,39 +1,36 @@
 # AI for Weather – Group Project
 
-Train a **transformer or VAE** on a weather/climate task.
+Train a transformer or VAE on a weather/climate task.
 
-> **Task:** _TBD_ · **Dataset:** _TBD_ · **Model:** _TBD_
+**Task:** TBD · **Dataset:** TBD · **Model:** TBD
+
+## The one rule
+
+**Only edit your own folder: `people/<your-name>/`.** Put your notebooks, figures and notes there.
+Keep notebook outputs saved so everyone can see your results on GitHub.
+
+`scripts/` holds shared scripts – mention it in the group chat before changing one.
 
 ## Setup
 
-Requires [uv](https://docs.astral.sh/uv/).
+Run code however you like (Colab, laptop, ...). Install the packages with:
 
 ```bash
-git clone <repo-url> && cd AI_weather
-uv sync                       # creates .venv with Python 3.12 + all deps
-uv run nbstripout --install   # strips notebook outputs on commit (run once per clone)
-uv run wandb login            # experiment tracking (team project)
+pip install -r requirements.txt
 ```
 
-GPU check: `uv run python -c "import torch; print(torch.cuda.is_available())"`
+## Git cheat sheet
 
-## Layout
+```bash
+git pull                              # get everyone's latest work
+# ...work in people/<your-name>/...
+git add people/<your-name>
+git commit -m "what you did"
+git push
+```
 
-| Path | Purpose |
-|---|---|
-| `src/aiweather/data/` | Dataset loading & preprocessing |
-| `src/aiweather/models/` | Model architectures |
-| `src/aiweather/training/` | Training loops |
-| `src/aiweather/eval/` | Metrics & evaluation |
-| `configs/` | YAML experiment configs |
-| `scripts/` | Entry points (download data, train, evaluate) |
-| `notebooks/` | Exploration – prefix with your initials, e.g. `jk_01_explore.ipynb` |
-| `tests/` | Tests |
-| `data/`, `outputs/` | Local only – gitignored |
+If `git push` is rejected: run `git pull`, then `git push` again.
 
-## Workflow
+No git? Upload files through the GitHub website: open your folder → **Add file → Upload files**.
 
-- Never push directly to `main`; branch (`feature/<short-name>`) and open a PR.
-- Get one review before merging.
-- Add dependencies with `uv add <pkg>` and commit `pyproject.toml` + `uv.lock` together.
-- Don't commit data, checkpoints or secrets (`.env`, `.cdsapirc`).
+Don't commit data, model checkpoints or passwords; `.gitignore` blocks the common ones.

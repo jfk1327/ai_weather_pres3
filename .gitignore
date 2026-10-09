@@ -1,19 +1,12 @@
-# Python
-__pycache__/
-*.py[cod]
+# Python / Jupyter
 .venv/
-*.egg-info/
-.pytest_cache/
-.ruff_cache/
+__pycache__/
 .ipynb_checkpoints/
 
-# Data & outputs (never commit)
-data/*
-!data/.gitkeep
-outputs/*
-!outputs/.gitkeep
+# Data, checkpoints, run logs (too big for git)
+data/
+outputs/
 wandb/
-checkpoints/
 *.pt
 *.pth
 *.ckpt
@@ -21,12 +14,8 @@ checkpoints/
 *.grib
 *.zarr/
 
-# Env / secrets
+# Secrets
 .env
-.netrc
 .cdsapirc
 
-# OS / editor
 .DS_Store
-.vscode/
-.idea/

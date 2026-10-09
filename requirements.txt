@@ -1,0 +1,11 @@
+# Colab already has torch installed; locally, install a CUDA build if you have a GPU.
+torch
+numpy
+xarray
+netcdf4
+pandas
+matplotlib
+pyyaml
+wandb
+tqdm
+jupyterlab
