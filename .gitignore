@@ -6,6 +6,7 @@ __pycache__/
 # Data, checkpoints, run logs (too big for git)
 data/*
 outputs/
+runs/
 wandb/
 *.pt
 *.pth

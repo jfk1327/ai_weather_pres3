@@ -36,12 +36,17 @@
 ## Phase 2 – VAE pipeline (in progress)
 
 ### Teammate version ✅ (Claude, at James's request)
-`notebooks/vae_minimal.ipynb`: one self-contained Colab notebook (clone + data, settings
-cell, year split, global z-score, conv VAE 32→16→8→4, MSE-sum + β·KL, training, plots, things to try).
-First run (RTX 5060, defaults): 429,409 params, 0.6 s/epoch, val loss 135 → 52.6 after 30 epochs.
-Already shows the hypothesis: windiest test day (2020-01-13) 48 m/s real vs 44 m/s reconstructed; samples'
-domain max tops out ~33 m/s at σ=1 and ~37 m/s at σ=1.3 vs ~42 m/s for real test days.
-Deliberately no quantile/QQ/tail metrics (James writes those).
+`notebooks/vae_minimal.ipynb`: one self-contained Colab notebook for running, understanding the losses
+and hyperparameter tuning (year split, global z-score, conv VAE 32→16→8→4, MSE-sum + β·KL).
+- Runs saved to Drive/`runs/` (`runs_log.csv` + per-run history/figures/weights); a repeated `RUN_NAME` is
+  refused; Section 10 overlays runs on the validation years.
+- Tuning uses train + val only; test years are shown only when `EVALUATE_ON_TEST=True` (final run, once).
+- Generation shown at σ = 1 only; "things to try" + 7 environmental extensions written as steps (not coded).
+- Deliberately **excluded** (James's analysis): σ-scaled sampling, domain-max/extremes comparison, latent
+  norms, tail metrics.
+Defaults on the RTX 5060: 429,409 params, 0.6 s/epoch, val error 0.99 m/s per pixel after 30 epochs.
+Earlier σ run (2026-10-15, now removed from the notebook; useful for James): windiest test day 48 m/s real vs
+44 m/s reconstructed; samples' domain max ~33 m/s at σ=1 and ~37 m/s at σ=1.3 vs ~42 m/s for real test days.
 
 ### James's version (learning)
 | Step | File | Status |
