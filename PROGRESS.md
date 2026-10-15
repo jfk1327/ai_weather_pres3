@@ -26,8 +26,9 @@
 ### Decisions
 - [James] Grid: larger box that is natively 32×32 (lat 49.75–57.5, lon −12.75 to −5.0) instead of interpolating; tail metrics on an Ireland mask.
 - [James] Everyone on `main`, each person commits only in `people/<name>/`.
-- [James] 2026-10-15: teammates (Kalpana, Lindah; Colab, no wandb) get a full working VAE notebook each to
-  play with and break; James keeps learning from skeletons in `people/james/`. Repo public; data committed.
+- [James] 2026-10-15: teammates (Kalpana, Lindah; Colab, no wandb) share ONE working VAE notebook
+  (`notebooks/vae_minimal.ipynb`) to play with and break in their own Colab copies; no per-person copies, no
+  collaborator access needed (repo is public). James keeps learning from skeletons in `people/james/`.
 
 ### Open questions
 - Gust vs speed: decide after Phase 1 exploration.
@@ -35,7 +36,7 @@
 ## Phase 2 – VAE pipeline (in progress)
 
 ### Teammate version ✅ (Claude, at James's request)
-`people/{kalpana,lindah}/vae_minimal.ipynb`: identical, self-contained Colab notebooks (clone + data, settings
+`notebooks/vae_minimal.ipynb`: one self-contained Colab notebook (clone + data, settings
 cell, year split, global z-score, conv VAE 32→16→8→4, MSE-sum + β·KL, training, plots, things to try).
 First run (RTX 5060, defaults): 429,409 params, 0.6 s/epoch, val loss 135 → 52.6 after 30 epochs.
 Already shows the hypothesis: windiest test day (2020-01-13) 48 m/s real vs 44 m/s reconstructed; samples'
@@ -59,5 +60,5 @@ Reference point (PCA + Gaussian sampling, sigma=1, train years): domain-max gust
 |---|---|
 | README.md, requirements.txt, PROGRESS.md | Claude |
 | download_era5.py | Claude |
-| people/kalpana, people/lindah (notebooks + READMEs) | Claude |
+| notebooks/vae_minimal.ipynb | Claude |
 | people/james/00_data_basics.ipynb, dataset.py skeleton | Claude (skeleton); James implements |

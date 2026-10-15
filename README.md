@@ -4,28 +4,32 @@ Train a VAE on daily-maximum 10 m wind over Ireland (ERA5, 32 × 32 grid, 1985�
 z ~ N(0, σ²I) with σ > 1 to generate more extreme fields (after Oliveira et al. 2021, arXiv 2108.00048).
 We test how well the generated tails match the real ones.
 
-## Start here
+## Start here: train the VAE and try hyperparameters
 
-| Who | Notebook | Colab |
-|---|---|---|
-| Kalpana | [`people/kalpana/vae_minimal.ipynb`](people/kalpana/) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jfk1327/ai_weather_pres3/blob/main/people/kalpana/vae_minimal.ipynb) |
-| Lindah | [`people/lindah/vae_minimal.ipynb`](people/lindah/) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jfk1327/ai_weather_pres3/blob/main/people/lindah/vae_minimal.ipynb) |
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jfk1327/ai_weather_pres3/blob/main/notebooks/vae_minimal.ipynb)
 
-On Colab: **Runtime → Change runtime type → T4 GPU**, then **Runtime → Run all** (about a minute).
-Each person's folder has a README with what to change and how to save.
+1. Click the badge. No GitHub account is needed.
+2. **Runtime → Change runtime type → T4 GPU.**
+3. **Runtime → Run all.** It downloads the code and data, then trains in about a minute.
+4. Change the numbers in **Section 1 (settings)** and run all again. **Section 10** lists things to try
+   (and to break on purpose). Change one thing at a time and screenshot the plots for the presentation.
+5. **File → Save a copy in Drive** keeps your edited version. It doesn't change the repo or anyone
+   else's copy, so experiment freely. Click the badge again for a fresh copy.
+
+The notebook on GitHub is saved with its outputs, so you can see the expected results before running it.
 
 ## Layout
 
 ```
+notebooks/vae_minimal.ipynb           the shared VAE notebook (start here)
 data/era5_ireland_wind_daily_max.nc   daily-max gust + speed, 14,610 days × 32 × 32 (33 MB, in git)
 download_era5.py                      rebuilds that file from ERA5 (~2 min, needs a CDS key)
-people/kalpana/  people/lindah/       full working VAE notebook each – your own copy to edit freely
 people/james/                         James's from-scratch version (work in progress)
 PROGRESS.md                           what's done, decisions, open questions
 ```
 
-**Only commit inside your own `people/<your-name>/` folder.** Ask in the group chat before changing
-anything else.
+Running the notebook needs no access to the repo. To push files (only if you want to), ask James to
+add you as a collaborator, and only commit inside your own `people/<your-name>/` folder.
 
 ## Run on a laptop
 
