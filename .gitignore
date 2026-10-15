@@ -4,7 +4,7 @@ __pycache__/
 .ipynb_checkpoints/
 
 # Data, checkpoints, run logs (too big for git)
-data/
+data/*
 outputs/
 wandb/
 *.pt
@@ -13,6 +13,9 @@ wandb/
 *.nc
 *.grib
 *.zarr/
+
+# ...except the compressed daily-max wind file (33 MB) so a clone is ready to run
+!data/era5_ireland_wind_daily_max.nc
 
 # Secrets
 .env

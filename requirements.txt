@@ -7,5 +7,10 @@ pandas
 matplotlib
 pyyaml
 wandb
+cdsapi
+zarr
+fsspec
+aiohttp
 tqdm
 jupyterlab
+notebook
