@@ -165,7 +165,9 @@ def return_levels_ireland():
     mask = W.ireland_mask(lat, lon)
     fig, ax = plt.subplots(figsize=(11, 5))
     v, T = P.exceedance(W.domain_max(data["train"][0], mask))
-    ax.plot(T, v, color=P.INK, lw=3.5, label="real (ERA5 1985–2014)")
+    ax.plot(T, v, color=P.INK, lw=3.5, label="real, training years 1985–2014")
+    v, T = P.exceedance(W.domain_max(data["test"][0], mask))
+    ax.plot(T, v, color=P.MUTED, lw=3, label="real, test years 2020–24")
     for n in ["zscore", "evt"]:
         m, tf, _, _ = W.load_model(W.OUT / "results" / "models" / f"{n}_s0.pt")
         for sg in [1.0, 1.3]:
@@ -263,6 +265,34 @@ def james_slides():
                 bbox=dict(fc=P.SURFACE, ec="none", alpha=0.85, pad=2))
     fig.colorbar(im, ax=axes, fraction=0.012, pad=0.01, label="m/s")
     save(fig, "s_extremes_maps.png")
+
+
+def test_storms():
+    """Named storms in the test years: real vs both models' reconstructions (3 storms x 3 rows)."""
+    data, lat, lon = W.load("gust")
+    mask = W.ireland_mask(lat, lon)
+    test, dates = data["test"][0], pd.to_datetime(data["test"][1])
+    rec = {}
+    for n in ["zscore", "evt"]:
+        m, tf, _, _ = W.load_model(W.OUT / "results" / "models" / f"{n}_s0.pt")
+        rec[n] = W.reconstruct(m, tf, W.torch.from_numpy(tf.forward(test))[:, None].to(W.DEVICE))
+    peak = W.domain_max(test, mask)
+    storms = {"Barra": "2021-12-07", "Eunice": "2022-02-18", "Isha": "2024-01-21"}
+    fig, axes = plt.subplots(3, 3, figsize=(8.4, 8.4))
+    for j, (name, d) in enumerate(storms.items()):
+        win = np.where(np.abs((dates - pd.Timestamp(d)).days) <= 1)[0]
+        i = int(win[np.argmax(peak[win])])
+        for r, (f, lab) in enumerate([(test[i], "real"), (rec["zscore"][i], "z-score VAE"), (rec["evt"][i], "EVT VAE")]):
+            im = P.wind_map(axes[r, j], f, lat, lon, vmin=10, vmax=45, mask=mask, peak=False,
+                            title=f"{name}, {dates[i]:%d %b %Y}" if r == 0 else None)
+            axes[r, j].text(0.04, 0.05, f"{f[mask].max():.0f} m/s", transform=axes[r, j].transAxes, fontsize=14,
+                            color=P.INK, bbox=dict(fc=P.SURFACE, ec="none", alpha=0.85, pad=2))
+            if j == 0:
+                axes[r, j].text(-0.06, 0.5, lab, transform=axes[r, j].transAxes, rotation=90, ha="right",
+                                va="center", fontsize=15)
+        axes[0, j].title.set_fontsize(14)
+    fig.subplots_adjust(wspace=0.05, hspace=0.12, left=0.06, right=0.99, top=0.95, bottom=0.01)
+    save(fig, "s_test_storms.png")
 
 
 def untitled_results():
