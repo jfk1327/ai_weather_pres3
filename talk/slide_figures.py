@@ -180,6 +180,91 @@ def return_levels_ireland():
     save(fig, "s_return_levels_ireland.png")
 
 
+def james_slides():
+    """Large-font versions of the Part 3 figures for the slides."""
+    import evaluate as E
+    from scipy.stats import genpareto, norm
+    data, lat, lon = W.load("gust")
+    mask = W.ireland_mask(lat, lon)
+    train, test = data["train"][0], data["test"][0]
+    models = {n: W.load_model(W.OUT / "results" / "models" / f"{n}_s0.pt") for n in ["zscore", "evt"]}
+
+    # where storms sit in code space vs where sampling draws (z-score model)
+    m, tf = models["zscore"][:2]
+    mu, _ = W.encode_mu(m, W.torch.from_numpy(tf.forward(test))[:, None].to(W.DEVICE))
+    r = np.linalg.norm(mu, axis=1)
+    peak = W.domain_max(test, mask)
+    storms = r[peak >= np.quantile(peak, 0.99)]
+    fig, ax = plt.subplots(figsize=(11, 4.4))
+    for sg, ls in [(1.0, "-"), (1.3, "--")]:
+        zz = sg * np.sqrt(np.random.default_rng(0).chisquare(m.latent_dim, 200000))
+        ax.hist(zz, bins=120, histtype="step", density=True, color=P.INK2, ls=ls, lw=2.2,
+                label=f"random codes, σ = {sg:g}")
+    ax.hist(storms, bins=10, density=True, color=P.COLORS["zscore"], alpha=0.45, lw=0,
+            label="codes of the windiest 1% of real days")
+    ax.set_xlabel("distance of the code from the centre"); ax.set_yticks([]); ax.spines["left"].set_visible(False)
+    ax.set_xlim(0, 8); ax.legend(loc="upper right")
+    fig.tight_layout()
+    save(fig, "s_latent.png")
+
+    # GPD: xi map + one pixel's tail
+    ev = models["evt"][1]
+    p = int(np.argmax(train.reshape(len(train), -1).max(0) * mask.ravel()))
+    fig, (a, b) = plt.subplots(1, 2, figsize=(11.5, 4.6), gridspec_kw=dict(width_ratios=[1, 1.5]))
+    im = P.wind_map(a, ev.xi.reshape(32, 32), lat, lon, vmin=-0.25, vmax=0.25, mask=mask, cmap=P.DIVERGE,
+                    peak=False, title="tail shape ξ (below 0 = natural ceiling)")
+    a.title.set_fontsize(14)
+    a.plot(lon[p % 32], lat[p // 32], "o", ms=10, mfc="none", mec=P.INK, mew=2.5)
+    fig.colorbar(im, ax=a, fraction=0.046, pad=0.03)
+    xs = train.reshape(len(train), -1)[:, p]
+    v, T = P.exceedance(xs)
+    b.plot(T, v, ".", color=P.INK, ms=5, label="real data (circled pixel)")
+    Tg = np.logspace(-1.5, 3, 200); sf = 1 / (Tg * 365.25); keep = sf < 1 - ev.q
+    b.plot(Tg[keep], ev.thr[p] + genpareto.isf(sf[keep] / (1 - ev.q), ev.xi[p], 0, ev.sigma[p]),
+           color=P.COLORS["evt"], lw=3, label="Pareto tail")
+    b.plot(Tg, norm.isf(sf, xs.mean(), xs.std()), color=P.MUTED, ls="--", lw=2.5, label="bell curve")
+    b.set_xscale("log"); b.set_xlim(0.03, 1000); b.set_ylim(15, 55)
+    b.set_xticks([0.1, 1, 10, 100, 1000], ["month", "year", "10 yr", "100 yr", "1000 yr"]); b.minorticks_off()
+    b.set_ylabel("daily max gust (m/s)"); b.set_xlabel("happens about once every …"); b.legend(loc="upper left")
+    fig.tight_layout()
+    save(fig, "s_gpd.png")
+
+    # sigma quantiles, large font, from the saved table
+    tab = pd.read_csv(W.OUT / "results" / "tail_table.csv")
+    ref = tab[tab.source.str.startswith("ERA5 train")].iloc[0]
+    fig, axes = plt.subplots(1, 3, figsize=(13, 4.8), sharex=True)
+    for ax, key, lab in zip(axes, ["ireland_q50", "ireland_q99", "ireland_q99.9"],
+                            ["typical day", "1 day in 100", "1 day in 1000"]):
+        ax.axhline(ref[f"{key}_mean"], color=P.INK, lw=2.5)
+        for n, name in [("zscore", "z-score VAE"), ("evt", "EVT VAE")]:
+            a_ = tab[tab.source == n].sort_values("sigma")
+            ax.plot(a_.sigma, a_[f"{key}_mean"], "o-", color=P.COLORS[n], ms=6, lw=2.5, label=name)
+        ax.set_title(lab); ax.set_xlabel("σ")
+    axes[0].set_ylabel("strongest gust over Ireland (m/s)")
+    axes[0].text(0.5, ref["ireland_q50_mean"] + 0.1, " real", va="bottom", fontsize=14, color=P.INK)
+    axes[0].legend(loc="lower right")
+    fig.tight_layout()
+    save(fig, "s_sigma.png")
+
+    # the most extreme maps: 2 real, 2 per model, one row
+    tdates = pd.to_datetime(data["train"][1])
+    ti = np.argsort(W.domain_max(train, mask))[::-1][:2]
+    picks = [(train[i], f"real\n{tdates[i]:%d %b %Y}") for i in ti]
+    for n, name in [("zscore", "z-score VAE"), ("evt", "EVT VAE")]:
+        m, tf = models[n][:2]
+        g = W.sample(m, tf, 14610, 1.3, seed=11)
+        gi = np.argsort(W.domain_max(g, mask))[::-1][:2]
+        picks += [(g[i], f"{name}\ngenerated, σ = 1.3") for i in gi]
+    fig, axes = plt.subplots(1, 6, figsize=(15, 3.6))
+    for ax, (f, t) in zip(axes, picks):
+        im = P.wind_map(ax, f, lat, lon, vmin=10, vmax=55, mask=mask, title=t, peak=False)
+        ax.title.set_fontsize(13)
+        ax.text(0.04, 0.05, f"{f.max():.0f} m/s", transform=ax.transAxes, fontsize=14, color=P.INK,
+                bbox=dict(fc=P.SURFACE, ec="none", alpha=0.85, pad=2))
+    fig.colorbar(im, ax=axes, fraction=0.012, pad=0.01, label="m/s")
+    save(fig, "s_extremes_maps.png")
+
+
 def untitled_results():
     """Re-render evaluate.py's figures into figures/slides/ without in-figure titles (results are deterministic)."""
     import matplotlib.figure
