@@ -33,7 +33,7 @@ DATA_PATH = ROOT / "data" / "era5_ireland_wind_daily_max.nc"
 SPLITS = {"train": (1985, 2014), "val": (2015, 2019), "test": (2020, 2024)}
 
 
-# TODO(human): implement the three pieces below (marked TODO). Decide the normalisation
+# TODO: implement the three pieces below (marked TODO). Decide the normalisation
 # (what statistic, global vs per-pixel, any transform first?) and justify it in a comment.
 # Weigh: gust >= 0 and right-skewed; storms are the rare pixels you care most about;
 # whatever you choose must be invertible so samples can be mapped back to m/s.
@@ -43,7 +43,11 @@ def load_split(variable, split, path=DATA_PATH):
 
     TODO: open the file, pick `variable`, select the years in SPLITS[split], convert to a tensor.
     """
-    raise NotImplementedError
+    start, end = SPLITS[split]
+    with xr.open_dataset(path) as ds:
+        # string years: slice("1985", "2014") includes every day up to 2014-12-31
+        maps = ds[variable].sel(time=slice(str(start), str(end))).values
+    return torch.from_numpy(maps)
 
 
 def compute_norm_stats(train_maps):
@@ -57,16 +61,19 @@ def compute_norm_stats(train_maps):
 
     TODO: decide what to compute. Why must val/test never be used here?
     """
-    raise NotImplementedError
-
+    norm_stats_dict = {}
+    norm_stats_dict["mean"] = train_maps.mean()
+    norm_stats_dict["std"] = train_maps.std()
+    return norm_stats_dict
 
 def denormalise(x, stats):
     """Invert the normalisation: model space -> m/s. Shape-preserving.
 
     TODO: needed later to turn decoded samples back into m/s for the tail metrics.
+    Log normalisation is a natural choice for skew zero bound data, but first add 1 to get rid of zero data, 
     """
-    raise NotImplementedError
-
+    return ((x * stats["std"]) + stats["mean"])
+    
 
 class WindDataset(Dataset):
     """Map-style dataset: item i is one day's normalised map.
@@ -78,13 +85,18 @@ class WindDataset(Dataset):
     """
 
     def __init__(self, maps, stats):
-        raise NotImplementedError
+        self.stats = stats
+        self.maps = maps
 
     def __len__(self):
-        raise NotImplementedError
+        return(len(self.maps))
 
     def __getitem__(self, i):
-        raise NotImplementedError
+        one_map = self.maps[i]
+        one_map = (one_map - self.stats["mean"]) / self.stats["std"]
+        return one_map.unsqueeze(0)
+            
+        
 
 
 def make_loaders(variable="gust", batch_size=64):
@@ -95,10 +107,24 @@ def make_loaders(variable="gust", batch_size=64):
 
     TODO: which loaders should shuffle, and why? Does drop_last matter here?
     """
-    raise NotImplementedError
+    train_data = load_split(variable, "train", path = DATA_PATH)
+    val_data = load_split(variable, "val", path = DATA_PATH)
+    test_data = load_split(variable, "test", path = DATA_PATH )
+    train_stats = compute_norm_stats(train_data)
+
+    train_data = WindDataset(train_data, train_stats)
+    val_data = WindDataset(val_data, train_stats )
+    test_data = WindDataset(test_data, train_stats)
+
+
+    train_loader = DataLoader(train_data,    batch_size, shuffle = True)
+    val_loader = DataLoader(val_data, batch_size, shuffle = False)
+    test_loader = DataLoader(test_data, batch_size, shuffle = False)
+    return train_loader, val_loader, test_loader, train_stats
 
 
 if __name__ == "__main__":
+    
     # Self-test: checks the contract the model and training loop rely on. Don't edit; make it pass.
     train_dl, val_dl, test_dl, stats = make_loaders("gust", batch_size=64)
 

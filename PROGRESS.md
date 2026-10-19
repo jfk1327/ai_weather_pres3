@@ -30,6 +30,9 @@
   (`notebooks/vae_minimal.ipynb`) to play with and break in their own Colab copies; no per-person copies, no
   collaborator access needed (repo is public). James keeps learning from skeletons in `people/james/`.
 
+- [James] 2026-10-16: baseline = global z-score + MSE (faithful to Oliveira). Follow-up model = EVT marginal
+  transform (empirical body + Generalised Pareto tail, as in evtGAN); compare both on a storm qualitatively.
+
 ### Open questions
 - Gust vs speed: decide after Phase 1 exploration.
 
@@ -51,14 +54,24 @@ Earlier σ run (2026-10-15, now removed from the notebook; useful for James): wi
 ### James's version (learning)
 | Step | File | Status |
 |---|---|---|
-| Dataset/DataLoader | `people/james/dataset.py` | Skeleton + self-test by Claude; **James implementing** (step 1: `load_split`) |
-| Model | `people/james/model.py` | Not started |
-| Loss | (in `model.py` or `train.py`) | Not started |
+| Dataset/DataLoader | `people/james/dataset.py` | ✅ 2026-10-16, self-test passes (James; `load_split` fixed by Claude at his request). Global z-score from train (mean 14.76, std 5.79 m/s); log1p rejected because it shrinks storm-pixel errors ~22× in MSE. Val mean +0.025σ (2015–19 slightly windier). Normalised train range −2.22 to +6.93. |
+| Model + loss | `people/james/model.py` | Skeleton + self-test by Claude (2026-10-16; loss lives in model.py, James's choice A); **James implementing** |
+| Follow-up: EVT margins | (in `dataset.py`, same `stats` interface) | Planned after baseline: empirical-CDF body + GPD tail per pixel → Φ⁻¹, compare vs z-score on a storm |
 | Training loop | `people/james/train.py` | Not started |
 | Tail metrics | `people/james/metrics.py` | Not started |
 
 Reference point (PCA + Gaussian sampling, sigma=1, train years): domain-max gust q99 34.1 vs real 39.4 m/s
 (5.3 m/s too low); produces negative gusts (min -13 m/s). PC1 skewness 0.73; PC2 spread 2x larger on windy days.
+
+## Talk version (branch `talk`, written by Claude at James's request, 2026-10-19) ✅
+Worktree `~/project/AI_weather_talk` (main stays the learning skeletons). Full pipeline in `talk/`:
+z-score VAE vs EVT-margin VAE (per-pixel empirical CDF + GPD tail -> N(0,1)), d=8, beta=1, 3 seeds.
+See `talk/RESULTS.md` and the learning notebook `talk/explainer.ipynb`. Key results (Ireland land max):
+- sigma=1: both ~5-6 m/s low at the 1-in-100-day level (34.4 real vs 28.5 / 29.3): hypothesis holds.
+- Matching the q99 needs sigma 1.47 (z-score) vs 1.32 (EVT); median day +1.4 vs +0.45 m/s too windy.
+- z-score makes negative gusts (2.3% of maps at sigma=1.3, 21% at 2); EVT never.
+- Reconstruction peak bias on windiest 1% of days ~-1.8 m/s for both (MSE blur; ~2 px positional averaging).
+- EVT at sigma=1.3 tracks ERA5 return levels over Ireland to ~10 yr; overshoots over ocean (xi~0).
 
 ## Who wrote what
 | File | Written by |
@@ -66,4 +79,4 @@ Reference point (PCA + Gaussian sampling, sigma=1, train years): domain-max gust
 | README.md, requirements.txt, PROGRESS.md | Claude |
 | download_era5.py | Claude |
 | notebooks/vae_minimal.ipynb | Claude |
-| people/james/00_data_basics.ipynb, dataset.py skeleton | Claude (skeleton); James implements |
+| people/james/00_data_basics.ipynb, dataset.py, model.py skeletons | Claude (skeleton + self-tests); James implements (`load_split` fixed by Claude at his request) |
