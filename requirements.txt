@@ -14,3 +14,5 @@ aiohttp
 tqdm
 jupyterlab
 notebook
+scipy
+global-land-mask

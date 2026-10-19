@@ -1,0 +1,10 @@
+           latent_dim  beta  val_rmse_ms  bulk_score  active_dims
+transform                                                        
+zscore              8   1.0     1.118000    1.378985            8
+evt                 8   1.0     1.131813    1.721563            8
+zscore seed 0: 94 epochs, best val total 58.7
+zscore seed 1: 75 epochs, best val total 58.3
+zscore seed 2: 70 epochs, best val total 58.9
+evt seed 0: 82 epochs, best val total 68.6
+evt seed 1: 71 epochs, best val total 69.3
+evt seed 2: 93 epochs, best val total 69.3

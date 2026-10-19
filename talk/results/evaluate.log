@@ -1,0 +1,141 @@
+{
+ "config": {
+  "zscore": {
+   "latent_dim": 8,
+   "beta": 1.0,
+   "seed": 0
+  },
+  "evt": {
+   "latent_dim": 8,
+   "beta": 1.0,
+   "seed": 0
+  }
+ },
+ "reconstruction_test": {
+  "evt": {
+   "rmse_ms_mean": 1.143,
+   "rmse_ms_std": 0.0,
+   "rmse_ireland_ms_mean": 1.02,
+   "rmse_ireland_ms_std": 0.003,
+   "peak_bias_all_ms_mean": -0.715,
+   "peak_bias_all_ms_std": 0.032,
+   "peak_bias_top1pct_ms_mean": -1.8,
+   "peak_bias_top1pct_ms_std": 0.08
+  },
+  "zscore": {
+   "rmse_ms_mean": 1.129,
+   "rmse_ms_std": 0.002,
+   "rmse_ireland_ms_mean": 1.059,
+   "rmse_ireland_ms_std": 0.003,
+   "peak_bias_all_ms_mean": -0.767,
+   "peak_bias_all_ms_std": 0.045,
+   "peak_bias_top1pct_ms_mean": -1.686,
+   "peak_bias_top1pct_ms_std": 0.231
+  }
+ },
+ "storms": {
+  "Ciara": {
+   "date": "2020-02-09",
+   "real_ireland_max": 37.0099983215332,
+   "zscore": 36.16642761230469,
+   "evt": 36.18454360961914
+  },
+  "Barra": {
+   "date": "2021-12-07",
+   "real_ireland_max": 41.709999084472656,
+   "zscore": 36.74513244628906,
+   "evt": 37.02522659301758
+  },
+  "Eunice": {
+   "date": "2022-02-18",
+   "real_ireland_max": 36.09000015258789,
+   "zscore": 36.020416259765625,
+   "evt": 35.08603286743164
+  },
+  "Agnes": {
+   "date": "2023-09-27",
+   "real_ireland_max": 33.55999755859375,
+   "zscore": 32.19325256347656,
+   "evt": 33.07689666748047
+  },
+  "Isha": {
+   "date": "2024-01-21",
+   "real_ireland_max": 41.61000061035156,
+   "zscore": 39.6408576965332,
+   "evt": 39.77452850341797
+  }
+ },
+ "matched_sigma": {
+  "zscore_ireland_q99": {
+   "sigma": 1.47,
+   "median_at_sigma": 18.25,
+   "real_median": 16.82
+  },
+  "zscore_ireland_q99.9": {
+   "sigma": 1.546,
+   "median_at_sigma": 18.45,
+   "real_median": 16.82
+  },
+  "evt_ireland_q99": {
+   "sigma": 1.316,
+   "median_at_sigma": 17.27,
+   "real_median": 16.82
+  },
+  "evt_ireland_q99.9": {
+   "sigma": 1.353,
+   "median_at_sigma": 17.36,
+   "real_median": 16.82
+  }
+ },
+ "long_run_max": {
+  "zscore_sigma1": {
+   "domain": 43.25370407104492,
+   "ireland": 37.892738342285156
+  },
+  "zscore_sigma1.3": {
+   "domain": 51.007083892822266,
+   "ireland": 44.28704833984375
+  },
+  "evt_sigma1": {
+   "domain": 52.076622009277344,
+   "ireland": 42.3377799987793
+  },
+  "evt_sigma1.3": {
+   "domain": 67.19949340820312,
+   "ireland": 51.59541320800781
+  }
+ },
+ "latent": {
+  "zscore": {
+   "corr_norm_peak": 0.26490503701710466,
+   "norm_median": 2.5891408920288086,
+   "norm_top1pct": 5.124058246612549,
+   "latent_dim": 8
+  },
+  "evt": {
+   "corr_norm_peak": 0.11880395491279805,
+   "norm_median": 2.5982515811920166,
+   "norm_top1pct": 4.401619911193848,
+   "latent_dim": 8
+  }
+ }
+}
+              source  sigma  ireland_q50_mean  ireland_q99_mean  ireland_q99.9_mean  ireland_max_mean  pct_maps_negative_mean  pct_maps_above_train_max_mean
+ ERA5 test 2020–2024    NaN         16.780001         34.509998           41.630001         41.759998                    0.00                           0.00
+ERA5 train 1985–2014    NaN         16.820000         34.439999           40.900002         47.410000                    0.00                           0.00
+                 evt   0.50         15.360000         21.660000           23.740000         26.200001                    0.00                           0.00
+                 evt   0.75         15.890000         25.309999           28.590000         32.560001                    0.00                           0.00
+                 evt   1.00         16.469999         29.290001           33.759998         38.900002                    0.00                           0.00
+                 evt   1.15         16.840000         31.719999           36.770000         42.840000                    0.00                           0.00
+                 evt   1.30         17.219999         34.169998           39.830002         46.610001                    0.00                           0.02
+                 evt   1.50         17.750000         37.450001           43.900002         51.360001                    0.00                           0.11
+                 evt   1.75         18.440001         41.470001           49.049999         57.790001                    0.00                           0.51
+                 evt   2.00         19.150000         45.419998           53.700001         64.070000                    0.00                           1.54
+              zscore   0.50         15.960000         22.040001           24.070000         26.549999                    0.00                           0.00
+              zscore   0.75         16.500000         25.270000           28.150000         31.620001                    0.00                           0.00
+              zscore   1.00         17.090000         28.459999           32.230000         36.610001                    0.19                           0.00
+              zscore   1.15         17.469999         30.370001           34.590000         39.570000                    0.82                           0.00
+              zscore   1.30         17.830000         32.290001           36.980000         42.540001                    2.33                           0.00
+              zscore   1.50         18.330000         34.820000           40.180000         46.500000                    6.27                           0.00
+              zscore   1.75         18.959999         38.009998           44.110001         51.529999                   13.29                           0.05
+              zscore   2.00         19.600000         41.250000           48.060001         56.540001                   21.11                           0.21

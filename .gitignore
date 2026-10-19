@@ -17,6 +17,8 @@ wandb/
 
 # ...except the compressed daily-max wind file (33 MB) so a clone is ready to run
 !data/era5_ireland_wind_daily_max.nc
+# ...and the talk's six final models (~10 MB), so talk/explainer.ipynb runs without retraining
+!talk/results/models/*.pt
 
 # Secrets
 .env

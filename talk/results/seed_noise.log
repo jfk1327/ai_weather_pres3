@@ -1,0 +1,27 @@
+{'transform': 'zscore', 'latent_dim': 8, 'beta': 1.0, 'seed': 1, 'bulk_score': 1.354306708441841, 'val_rmse_ms': 1.115327000617981}
+{'transform': 'zscore', 'latent_dim': 8, 'beta': 1.0, 'seed': 2, 'bulk_score': 1.386619175804987, 'val_rmse_ms': 1.1214215755462646}
+{'transform': 'zscore', 'latent_dim': 32, 'beta': 1.0, 'seed': 1, 'bulk_score': 1.8683350351121697, 'val_rmse_ms': 0.8090363144874573}
+{'transform': 'zscore', 'latent_dim': 32, 'beta': 1.0, 'seed': 2, 'bulk_score': 1.3055791642930779, 'val_rmse_ms': 0.7929537892341614}
+{'transform': 'zscore', 'latent_dim': 32, 'beta': 2.0, 'seed': 1, 'bulk_score': 1.623410246107313, 'val_rmse_ms': 0.924078106880188}
+{'transform': 'zscore', 'latent_dim': 32, 'beta': 2.0, 'seed': 2, 'bulk_score': 1.517101764678954, 'val_rmse_ms': 0.9173382520675659}
+{'transform': 'evt', 'latent_dim': 8, 'beta': 1.0, 'seed': 1, 'bulk_score': 1.8772325515747073, 'val_rmse_ms': 1.1352591514587402}
+{'transform': 'evt', 'latent_dim': 8, 'beta': 1.0, 'seed': 2, 'bulk_score': 1.4963513056437172, 'val_rmse_ms': 1.1289794445037842}
+{'transform': 'evt', 'latent_dim': 32, 'beta': 1.0, 'seed': 1, 'bulk_score': 1.9885749710930711, 'val_rmse_ms': 0.7670816779136658}
+{'transform': 'evt', 'latent_dim': 32, 'beta': 1.0, 'seed': 2, 'bulk_score': 1.740725474887424, 'val_rmse_ms': 0.770966649055481}
+{'transform': 'evt', 'latent_dim': 32, 'beta': 2.0, 'seed': 1, 'bulk_score': 1.9306523217095268, 'val_rmse_ms': 0.8922713994979858}
+{'transform': 'evt', 'latent_dim': 32, 'beta': 2.0, 'seed': 2, 'bulk_score': 1.8639355871412493, 'val_rmse_ms': 0.8911541104316711}
+                          bulk_score        val_rmse_ms       
+                                mean    std        mean    std
+transform latent_dim beta                                     
+evt       8          1.0       1.698  0.191       1.132  0.003
+          32         1.0       1.841  0.130       0.768  0.002
+                     2.0       1.798  0.175       0.893  0.002
+zscore    8          1.0       1.373  0.017       1.118  0.003
+          32         1.0       1.534  0.296       0.797  0.011
+                     2.0       1.583  0.057       0.921  0.003
+summed over transforms:
+                   mean    std
+latent_dim beta              
+8          1.0   3.072  0.176
+32         1.0   3.376  0.426
+           2.0   3.381  0.173

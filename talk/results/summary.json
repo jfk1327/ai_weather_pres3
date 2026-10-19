@@ -1,0 +1,122 @@
+{
+ "config": {
+  "zscore": {
+   "latent_dim": 8,
+   "beta": 1.0,
+   "seed": 0
+  },
+  "evt": {
+   "latent_dim": 8,
+   "beta": 1.0,
+   "seed": 0
+  }
+ },
+ "reconstruction_test": {
+  "evt": {
+   "rmse_ms_mean": 1.143,
+   "rmse_ms_std": 0.0,
+   "rmse_ireland_ms_mean": 1.02,
+   "rmse_ireland_ms_std": 0.003,
+   "peak_bias_all_ms_mean": -0.715,
+   "peak_bias_all_ms_std": 0.032,
+   "peak_bias_top1pct_ms_mean": -1.8,
+   "peak_bias_top1pct_ms_std": 0.08
+  },
+  "zscore": {
+   "rmse_ms_mean": 1.129,
+   "rmse_ms_std": 0.002,
+   "rmse_ireland_ms_mean": 1.059,
+   "rmse_ireland_ms_std": 0.003,
+   "peak_bias_all_ms_mean": -0.767,
+   "peak_bias_all_ms_std": 0.045,
+   "peak_bias_top1pct_ms_mean": -1.686,
+   "peak_bias_top1pct_ms_std": 0.231
+  }
+ },
+ "storms": {
+  "Ciara": {
+   "date": "2020-02-09",
+   "real_ireland_max": 37.0099983215332,
+   "zscore": 36.16642761230469,
+   "evt": 36.18454360961914
+  },
+  "Barra": {
+   "date": "2021-12-07",
+   "real_ireland_max": 41.709999084472656,
+   "zscore": 36.74513244628906,
+   "evt": 37.02522659301758
+  },
+  "Eunice": {
+   "date": "2022-02-18",
+   "real_ireland_max": 36.09000015258789,
+   "zscore": 36.020416259765625,
+   "evt": 35.08603286743164
+  },
+  "Agnes": {
+   "date": "2023-09-27",
+   "real_ireland_max": 33.55999755859375,
+   "zscore": 32.19325256347656,
+   "evt": 33.07689666748047
+  },
+  "Isha": {
+   "date": "2024-01-21",
+   "real_ireland_max": 41.61000061035156,
+   "zscore": 39.6408576965332,
+   "evt": 39.77452850341797
+  }
+ },
+ "matched_sigma": {
+  "zscore_ireland_q99": {
+   "sigma": 1.47,
+   "median_at_sigma": 18.25,
+   "real_median": 16.82
+  },
+  "zscore_ireland_q99.9": {
+   "sigma": 1.546,
+   "median_at_sigma": 18.45,
+   "real_median": 16.82
+  },
+  "evt_ireland_q99": {
+   "sigma": 1.316,
+   "median_at_sigma": 17.27,
+   "real_median": 16.82
+  },
+  "evt_ireland_q99.9": {
+   "sigma": 1.353,
+   "median_at_sigma": 17.36,
+   "real_median": 16.82
+  }
+ },
+ "long_run_max": {
+  "zscore_sigma1": {
+   "domain": 43.25370407104492,
+   "ireland": 37.892738342285156
+  },
+  "zscore_sigma1.3": {
+   "domain": 51.007083892822266,
+   "ireland": 44.28704833984375
+  },
+  "evt_sigma1": {
+   "domain": 52.076622009277344,
+   "ireland": 42.3377799987793
+  },
+  "evt_sigma1.3": {
+   "domain": 67.19949340820312,
+   "ireland": 51.59541320800781
+  }
+ },
+ "latent": {
+  "zscore": {
+   "corr_norm_peak": 0.26490503701710466,
+   "norm_median": 2.5891408920288086,
+   "norm_top1pct": 5.124058246612549,
+   "latent_dim": 8
+  },
+  "evt": {
+   "corr_norm_peak": 0.11880395491279805,
+   "norm_median": 2.5982515811920166,
+   "norm_top1pct": 4.401619911193848,
+   "latent_dim": 8
+  }
+ }
+}

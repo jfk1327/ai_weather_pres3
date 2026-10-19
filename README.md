@@ -18,6 +18,13 @@ We test how well the generated tails match the real ones.
 
 The notebook on GitHub is saved with its outputs, so you can see the expected results before running it.
 
+## Talk branch: z-score vs extreme-value VAE
+
+This branch (`talk`) holds the full pipeline and results for the presentation: two VAEs (z-score vs
+EVT/Generalised-Pareto margins), tuned on validation years, compared on extremes in the test years.
+Start with **`talk/RESULTS.md`** (numbers + talking points) and **`talk/explainer.ipynb`** (the maths,
+the choices and the results, as a learning notebook). Figures are in `talk/figures/`.
+
 ## Layout
 
 ```
